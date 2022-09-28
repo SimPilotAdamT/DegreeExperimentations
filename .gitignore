@@ -6,6 +6,7 @@ out/
 !**/src/test/**/out/
 .idea
 .run
+*.iml
 
 ### Eclipse ###
 .apt_generated
