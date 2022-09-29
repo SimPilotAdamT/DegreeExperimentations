@@ -25,7 +25,7 @@ public class experiments {
                     System.out.println(maths.sum(impInt(),impInt()));
                     valid = true;
                 }
-                else if (Integer.parseInt(inp) == 2) System.out.print("\nAdam Tazul\nDOB: 2004-05-01\nZodiac: Taurus (like anybody cares or even believes zodiac signs have an effect on anything personality-related)\n"); // Topic 2
+                else if (Integer.parseInt(inp) == 2) System.out.print("\nAdam Tazul\nDOB: 2004-05-01\nZodiac: Taurus\n"); // Topic 2
                 else if (Integer.parseInt(inp) == 3) {
                     exit = true;
                     valid = true;
@@ -63,5 +63,3 @@ public class experiments {
         return(Integer.parseInt(inp));
     }
 }
-
-class maths {public static String sum(int x,int y){int z=x+y;return("\nSum of x+y = "+z+"\n");}}
