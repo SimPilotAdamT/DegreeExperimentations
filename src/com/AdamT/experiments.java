@@ -1,3 +1,10 @@
+/*
+ * This is a collection of  programs I have written to help get my degree in computer science
+ *  The degree is still in progress, so you can expect updates fairly quickly as I progress
+ *  Everything is licenced under the GNU GPK v3 licence
+ *  Everything will be uploaded to the git repo on https://github.com/SimPilotAdamT/DegreeExperimentations
+ */
+
 package com.AdamT;
 
 import  java.lang.*;
