@@ -53,7 +53,7 @@ public class experiments {
             }
         }
         input.close();
-        System.out.println("Bye!");
+        System.out.println("\nBye!");
     }
     private static void menu() {
         System.out.println("Choose from the following programs:");
