@@ -100,7 +100,6 @@ public class experiments { // Main class
                         else valid = true;
                     }
                     taxRate = Double.parseDouble(inp);
-                    
                     System.out.println(maths.findCost3(price, taxRate));
                 }
                 else if (Integer.parseInt(inp) == 5) { // To ensure this isn't an infinite loop'
@@ -169,7 +168,7 @@ class maths {
         return("\nThe diameter of your circle of radius " + rad + " = " + diam + "\nThe area of the circle = " + area + "\nThe circumference of the circle = " + circ + "\nThe value of pi used = " + PI + "\n");
     }
     
-    public static String findCost3(double price, double taxRate) {
+    public static String findCost3(double price, double taxRate) { // More from Dr Kans' book
         double finalPrice = price * (1 + taxRate/100);
         return("\nThe final price of the product, assuming an original price of £" + price + " and a tax rate of " + taxRate + "%, = £" + round(finalPrice, 2) + "\n");
     }
