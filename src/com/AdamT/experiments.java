@@ -10,6 +10,7 @@ package com.AdamT; // Specifies the directory the files are in
 // IMPORTS
 import  java.lang.*;
 import java.util.*;
+import java.math.*;
 
 public class experiments { // Main class
     // VARIABLES
@@ -35,22 +36,76 @@ public class experiments { // Main class
                     inp = input.nextLine();
                 }
                 else if (Integer.parseInt(inp) == 1) { // Example shown in Topic 2, enhanced slightly
-                    System.out.println("\nWelcome to AdamT's summation program!");
-                    System.out.println(maths.sum(inpDouble(),inpDouble()));
                     valid = true;
+                    System.out.println("\nWelcome to AdamT's summation program!");
+                    System.out.println(maths.sum(inpDouble(), inpDouble()));
                 }
                 else if (Integer.parseInt(inp) == 2) { // Topic 2
-                    System.out.println("\nAdam Tazul\nDOB: 2004-05-01\nZodiac: Taurus\n");
                     valid = true;
+                    System.out.println("\nAdam Tazul\nDOB: 2004-05-01\nZodiac: Taurus\n");
                 }
-                else if (Integer.parseInt(inp)==3) { // Topic 3
+                else if (Integer.parseInt(inp) == 3) { // Topic 3
+                    valid = true;
                     System.out.println("\nWelcome to AdamT's circle calculator!");
                     System.out.println(maths.CircCalc(inpDouble()));
-                    valid = true;
                 }
-                else if (Integer.parseInt(inp) == 4) { // To ensure this isn't an infinite loop'
-                    exit = true;
+                else if (Integer.parseInt(inp) == 4) { // From chapter 2 of Dr Aaron Kans' book
                     valid = true;
+                    System.out.println("\nWelcome to AdamT's Tax-Cost Calculator!");
+                    double taxRate;
+                    double price;
+    
+                    System.out.print("\nEnter the original price (cannot be £0 or below, include the decimal point): £");
+                    inp = input.nextLine();
+                    valid = false;
+                    while (!valid) {
+                        if (isNotDouble(inp)) {
+                            System.out.println("\nERROR!\nInput not a number!\n");
+                            System.out.print("Try again: £");
+                            inp = input.nextLine();
+                        }
+                        else if (Double.parseDouble(inp) <= 0) {
+                            System.out.println("\nERROR!\nInvalid input!\nPrices are not allowed to be £0 or below!\n");
+                            System.out.print("Try again: £");
+                            inp = input.nextLine();
+                        }
+                        else if (!inp.contains(".")) {
+                            System.out.println("\nERROR!\nInvalid input!\nPrices need to include the decimal point!\n");
+                            System.out.print("Try again: £");
+                            inp = input.nextLine();
+                        }
+                        else if (inp.length() - inp.indexOf(".") - 1 != 2) {
+                            System.out.println("\nERROR!\nInvalid input!\nPrices need to have 2 decimal places!\n");
+                            System.out.print("Try again: £");
+                            inp = input.nextLine();
+                        }
+                        else valid = true;
+                    }
+                    price = Double.parseDouble(inp);
+                    
+                    System.out.print("\nEnter the tax rate (cannot be below 0%): ");
+                    inp = input.nextLine();
+                    valid = false;
+                    while (!valid) {
+                        if (isNotDouble(inp)) {
+                            System.out.println("\nERROR!\nInput not a number!\n");
+                            System.out.print("Try again: ");
+                            inp = input.nextLine();
+                        }
+                        else if (Double.parseDouble(inp) < 0) {
+                            System.out.println("\nERROR!\nInvalid input!\nTax rates are not allowed to be less than 0%!\n");
+                            System.out.print("Try again: ");
+                            inp = input.nextLine();
+                        }
+                        else valid = true;
+                    }
+                    taxRate = Double.parseDouble(inp);
+                    
+                    System.out.println(maths.findCost3(price, taxRate));
+                }
+                else if (Integer.parseInt(inp) == 5) { // To ensure this isn't an infinite loop'
+                    valid = true;
+                    exit = true;
                 }
                 else { // So the user can change their option if they input an integer that is not on the list
                     System.out.println("\nERROR!\nInvalid input!\n");
@@ -67,7 +122,8 @@ public class experiments { // Main class
         System.out.println("1: Sum (adds 2 numbers from STDIN)");
         System.out.println("2: About me (prints some info about me)");
         System.out.println("3: Circle dimension calculator (prints the area and circumference of a given circle's radius)");
-        System.out.println("4: Exit (exit this program)");
+        System.out.println("4: Tax-Cost calculator (calculates the true price of something after tax, with the original price and the tax rate provided via STDIN)");
+        System.out.println("5: Exit (exit this program)");
         System.out.print("\nPlease input the corresponding number to your desired option: ");
     }
 
@@ -91,23 +147,30 @@ public class experiments { // Main class
     }
 }
 
-// The following class with have all of the calculation-related stuff
+// The following class with have all the calculation-related stuff
 class maths {
+    private static double round(double value, int places) {
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return(bd.doubleValue());
+    }
+    
     public static String sum(double x, double y) { // Example shown in Topic 2, enhanced slightly
-        try { // Try-catch used here in case of any random error
-            double z = x + y;
-            return("\nSum of x+y = " + z + "\n");
-        } catch (Exception  ignored) {return("\nERROR!\nThere was an internal error with the calculation.\n");}
+        double z = x + y;
+        return("\nSum of x+y = " + z + "\n");
     }
 
     public static String CircCalc(double rad) { // Topic 3
-        try { // Try-catch used here in case of any random error
-            if (rad <= 0) return ("\nERROR!\nThere was an internal error with the calculation.\nMaybe you accidentally put a negative number?\n");
-            final double PI = 3.1415936535897932;
-            double area = PI * rad * rad;
-            double circ = PI * rad * 2;
-            double diam = rad * 2;
-            return("\nThe diameter of your circle of radius " + rad + " = " + diam + "\nThe area of the circle = " + area + "\nThe circumference of the circle = " + circ + "\nThe value of pi used = " + PI + "\n");
-        } catch (Exception  ignored) {return("\nERROR!\nThere was an internal error with the calculation.\n");}
+        if (rad <= 0) return ("\nERROR!\nThere was an internal error with the calculation.\nMaybe you accidentally put a negative number?\n");
+        final double PI = 3.1415936535897932;
+        double area = PI * rad * rad;
+        double circ = PI * rad * 2;
+        double diam = rad * 2;
+        return("\nThe diameter of your circle of radius " + rad + " = " + diam + "\nThe area of the circle = " + area + "\nThe circumference of the circle = " + circ + "\nThe value of pi used = " + PI + "\n");
+    }
+    
+    public static String findCost3(double price, double taxRate) {
+        double finalPrice = price * (1 + taxRate/100);
+        return("\nThe final price of the product, assuming an original price of £" + price + " and a tax rate of " + taxRate + "%, = £" + round(finalPrice, 2) + "\n");
     }
 }
