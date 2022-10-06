@@ -243,26 +243,82 @@ class maths {
 	
 	public static String conversionCalc(String from, String to, double val)  throws InvalidUnitsException { // Topic 3's extra task, expanded on very elaborately
 		double result;
-		switch (from) {
-			case "KG":
-			case "LBS":
-			case "kg":
-			case "lbs":
-				break;
-			default :
-				throw new InvalidUnitsException(from + " is an invalid unit");
-		}
 		switch (to) {
+			case "M":
+			case "m":
+				switch (from) {
+					case "IN":
+					case "in":
+						result = val * 39.37007874015748;
+						break;
+					case "FT":
+					case "ft":
+						result = (val / 3.2808398950131236) * 12;
+						break;
+					default:
+						throw new InvalidUnitsException("Given units incompatible");
+				}
+				return("\nConverting " + val + from + " into m gives " + result + "m.");
+			case "IN":
+			case "in":
+				switch (from) {
+					case "FT":
+					case "ft":
+						result = val * 12;
+						break;
+					case "M":
+					case "m":
+						result = val / 39.37007874015748;
+						break;
+					default:
+						throw new InvalidUnitsException("Given units incompatible");
+				}
+				return("\nConverting " + val + from + " into in gives " + result + "in.");
+			case "TN":
+			case "tn":
+				switch (from) {
+					case "KG":
+					case "kg":
+						result = val * 1000;
+						break;
+					case "TN":
+					case "tn":
+						result = val * 2204.6226218487758;
+						break;
+					default:
+						throw new InvalidUnitsException("Given units incompatible");
+				}
+				return("\nConverting " + val + from + " into tn gives " + result + "tn.");
 			case "KG":
 			case "kg":
-				if (!from.equalsIgnoreCase("lbs")) throw new InvalidUnitsException("Given units incompatible");
-				result = val * 2.2046226218487758;
-				return("\nConverting " + val + "lbs into kg gives " + result + "kg.");
+				switch (from) {
+					case "TN":
+					case "tn":
+						result = val / 1000;
+						break;
+					case "LBS":
+					case "lbs":
+						result = val * 2.2046226218487758;
+						break;
+					default:
+						throw new InvalidUnitsException("Given units incompatible");
+				}
+				return("\nConverting " + val + from + " into kg gives " + result + "kg.");
 			case "LBS":
 			case "lbs":
-				if (!from.equalsIgnoreCase("kg")) throw new InvalidUnitsException("Given units incompatible");
-				result = val / 2.2046226218487758;
-				return("\nConverting " + val + "kg into kg gives " + result + "lbs.");
+				switch (from) {
+					case "TN":
+					case "tn":
+						result = val / 2204.6226218487758;
+								break;
+					case "KG":
+					case "kg":
+						result = val / 2.2046226218487758;
+						break;
+					default:
+						throw new InvalidUnitsException("Given units incompatible");
+				}
+				return("\nConverting " + val + from + " into lbs gives " + result + "lbs.");
 			default:
 				throw new InvalidUnitsException(to + " is an invalid unit");
 		}
