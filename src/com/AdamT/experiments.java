@@ -138,7 +138,7 @@ public class experiments { // Main class
 									System.out.print("Enter here: ");
 									num = inpDouble();
 									try {
-										System.out.println(maths.conversionCalc(str1, str2, num));
+										System.out.println(maths.conversionCalc(str1, str2, num, "length"));
 										ex1 = true;
 									} catch (Exception e) {
 										e.printStackTrace();
@@ -222,18 +222,12 @@ class maths {
 		return(bd.doubleValue());
 	}
 	
-	public static String sum(double x, double y) { // Example shown in Topic 2, enhanced slightly
-		double z = x + y;
-		return("\nSum of x+y = " + z + "\n");
-	}
+	public static String sum(double x,double y){return("\nSum of x+y = "+(x+y)+"\n");} // Example shown in Topic 2, enhanced slightly
 	
 	public static String CircCalc(double rad) { // Topic 3
 		if (rad <= 0) return ("\nERROR!\nThere was an internal error with the calculation.\nMaybe you accidentally put a negative number?\n");
 		final double PI = 3.1415936535897932;
-		double area = PI * rad * rad;
-		double circ = PI * rad * 2;
-		double diam = rad * 2;
-		return("\nThe diameter of your circle of radius " + rad + " = " + diam + "\nThe area of the circle = " + area + "\nThe circumference of the circle = " + circ + "\nThe value of pi used = " + PI + "\n");
+		return("\nThe diameter of your circle of radius " + rad + " = " + (rad*2) + "\nThe area of the circle = " + (PI*rad*rad) + "\nThe circumference of the circle = " + (PI*rad*2) + "\nThe value of pi used = " + PI + "\n");
 	}
 	
 	public static String findCost3(double price, double taxRate) { // More from Dr Kans' book
@@ -241,87 +235,58 @@ class maths {
 		return("\nThe final price of the product, assuming an original price of £" + price + " and a tax rate of " + taxRate + "%, = £" + round(finalPrice, 2) + "\n");
 	}
 	
-	public static String conversionCalc(String from, String to, double val)  throws InvalidUnitsException { // Topic 3's extra task, expanded on very elaborately
-		double result;
-		switch (to) {
-			case "M":
-			case "m":
-				switch (from) {
-					case "IN":
-					case "in":
-						result = val * 39.37007874015748;
-						break;
-					case "FT":
-					case "ft":
-						result = (val / 3.2808398950131236) * 12;
-						break;
-					default:
-						throw new InvalidUnitsException("Given units incompatible");
-				}
-				return("\nConverting " + val + from + " into m gives " + result + "m.");
-			case "IN":
-			case "in":
-				switch (from) {
-					case "FT":
-					case "ft":
-						result = val * 12;
-						break;
-					case "M":
-					case "m":
-						result = val / 39.37007874015748;
-						break;
-					default:
-						throw new InvalidUnitsException("Given units incompatible");
-				}
-				return("\nConverting " + val + from + " into in gives " + result + "in.");
-			case "TN":
-			case "tn":
-				switch (from) {
-					case "KG":
-					case "kg":
-						result = val * 1000;
-						break;
-					case "TN":
-					case "tn":
-						result = val * 2204.6226218487758;
-						break;
-					default:
-						throw new InvalidUnitsException("Given units incompatible");
-				}
-				return("\nConverting " + val + from + " into tn gives " + result + "tn.");
-			case "KG":
-			case "kg":
-				switch (from) {
-					case "TN":
-					case "tn":
-						result = val / 1000;
-						break;
-					case "LBS":
-					case "lbs":
-						result = val * 2.2046226218487758;
-						break;
-					default:
-						throw new InvalidUnitsException("Given units incompatible");
-				}
-				return("\nConverting " + val + from + " into kg gives " + result + "kg.");
-			case "LBS":
-			case "lbs":
-				switch (from) {
-					case "TN":
-					case "tn":
-						result = val / 2204.6226218487758;
-								break;
-					case "KG":
-					case "kg":
-						result = val / 2.2046226218487758;
-						break;
-					default:
-						throw new InvalidUnitsException("Given units incompatible");
-				}
-				return("\nConverting " + val + from + " into lbs gives " + result + "lbs.");
+	public static String conversionCalc(String from, String to, double val, String type)  throws InvalidUnitsException { // Topic 3's extra task, expanded on very elaborately
+		double result = 0;
+		ArrayList<String> lengthUnits = new ArrayList<>();
+		lengthUnits.add("m");
+		lengthUnits.add("km");
+		lengthUnits.add("in");
+		lengthUnits.add("ft");
+		lengthUnits.add("mi");
+		lengthUnits.add("nm");
+		switch(type) {
+			case "length":
+				if (!lengthUnits.contains(from.toLowerCase()) || !lengthUnits.contains(to.toLowerCase()) || to.equalsIgnoreCase(from.toLowerCase())) throw new InvalidUnitsException("Invalid units provided.");
+				// from meters
+				if (from.equalsIgnoreCase("m") && to.equalsIgnoreCase("km")) result = val / 1000;
+				if (from.equalsIgnoreCase("m") && to.equalsIgnoreCase("in")) result = val * 39.37007874015748;
+				if (from.equalsIgnoreCase("m") && to.equalsIgnoreCase("ft")) result = val * 3.2808398950131236;
+				if (from.equalsIgnoreCase("m") && to.equalsIgnoreCase("mi")) result = val * 1000 * 0.621371192237334;
+				if (from.equalsIgnoreCase("m") && to.equalsIgnoreCase("nm")) result = val * 1000 * 0.5399568034557236;
+				// from kilometers
+				if (from.equalsIgnoreCase("km") && to.equalsIgnoreCase("m")) result = val * 0.001;
+				if (from.equalsIgnoreCase("km") && to.equalsIgnoreCase("in")) result = val * 0.001 * 39.37007874015748;
+				if (from.equalsIgnoreCase("km") && to.equalsIgnoreCase("ft")) result = val * 0.001 * 3.2808398950131236;
+				if (from.equalsIgnoreCase("km") && to.equalsIgnoreCase("mi")) result = val * 0.621371192237334;
+				if (from.equalsIgnoreCase("km") && to.equalsIgnoreCase("nm")) result = val * 0.5399568034557236;
+				// from inches
+				if (from.equalsIgnoreCase("in") && to.equalsIgnoreCase("m")) result = val / 39.37007874015748;
+				if (from.equalsIgnoreCase("in") && to.equalsIgnoreCase("km")) result = (val / 39.37007874015748) * 1000;
+				if (from.equalsIgnoreCase("in") && to.equalsIgnoreCase("ft")) result = val / 12;
+				if (from.equalsIgnoreCase("in") && to.equalsIgnoreCase("mi")) result = ((val / 39.37007874015748) * 1000) * 0.621371192237334;
+				if (from.equalsIgnoreCase("in") && to.equalsIgnoreCase("nm")) result = ((val / 39.37007874015748) * 1000) * 0.5399568034557236;
+				// from feet
+				if (from.equalsIgnoreCase("ft") && to.equalsIgnoreCase("m")) result = val / 39.37007874015748;
+				if (from.equalsIgnoreCase("ft") && to.equalsIgnoreCase("km")) result = (val / 39.37007874015748) * 1000;
+				if (from.equalsIgnoreCase("ft") && to.equalsIgnoreCase("in")) result = val / 12;
+				if (from.equalsIgnoreCase("ft") && to.equalsIgnoreCase("mi")) result = (val / (0.001 * 3.2808398950131236)) * 0.621371192237334;
+				if (from.equalsIgnoreCase("ft") && to.equalsIgnoreCase("nm")) result = (val / (0.001 * 3.2808398950131236)) * 0.5399568034557236;
+				// from miles
+				if (from.equalsIgnoreCase("mi") && to.equalsIgnoreCase("m")) result = val / (1000 * 0.621371192237334);
+				if (from.equalsIgnoreCase("mi") && to.equalsIgnoreCase("km")) result = val / 0.621371192237334;
+				if (from.equalsIgnoreCase("mi") && to.equalsIgnoreCase("in")) result = (val / 0.621371192237334) / (0.001 * 39.37007874015748);
+				if (from.equalsIgnoreCase("mi") && to.equalsIgnoreCase("ft")) result = (val / 0.621371192237334) / (0.001 * 3.2808398950131236);
+				if (from.equalsIgnoreCase("mi") && to.equalsIgnoreCase("nm")) result = val * 0.8689762419006479;
+				// from nautical miles
+				if (from.equalsIgnoreCase("nm") && to.equalsIgnoreCase("m")) result = val / (1000 * 0.5399568034557236);
+				if (from.equalsIgnoreCase("nm") && to.equalsIgnoreCase("km")) result = (val / (1000 * 0.5399568034557236)) * 1000;
+				break;
+			/*case "weight":
+				break;*/
 			default:
-				throw new InvalidUnitsException(to + " is an invalid unit");
+				throw new RuntimeException("Programming bug found! Open an issue in the GitHUb explaining your input verbatim.");
 		}
+		return("Converting " + val + from.toLowerCase() + " to " + to.toLowerCase() + " gives " + result + to.toLowerCase());
 	}
 }
 
